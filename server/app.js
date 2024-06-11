@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-
+const database = require("./database/mongoose.js")
 var app = express();
 
 app.use(logger('dev'));
