@@ -7,6 +7,8 @@ var cors = require('cors');
 const database = require("./database/mongoose.js")
 var app = express();
 
+var authRouter = require('./routes/authRoute')
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -16,6 +18,7 @@ app.use(cors({
   origin: '*' // Zmień na adres swojej aplikacji frontendowej
 }));
 
+app.use('/', authRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

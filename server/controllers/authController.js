@@ -4,9 +4,7 @@ var jwt = require('jsonwebtoken')
 var dotenv = require('dotenv')
 dotenv.config()
 
-var User = require('../database/models/UserModel')
-
-const User = require("../database/models/User.js");
+const User = require("../database/models/User");
 
 module.exports = {
     async register(req, res) {
@@ -21,7 +19,7 @@ module.exports = {
                     message: "User already exists",
                 });
             }
-
+            console.log(login)
             // Encrypt the password
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(password, saltRounds);
