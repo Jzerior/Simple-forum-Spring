@@ -20,7 +20,7 @@ const PostList: React.FC = () => {
 
   const fetchPosts = async (page: number) => {
     try {
-      const response = await fetch(`http://localhost:5000/post/allPosts`);
+      const response = await fetch(`http://localhost:5000/post/postPage/${page}`);
       const data = await response.json();
 
       if (data.data.length === 0) {

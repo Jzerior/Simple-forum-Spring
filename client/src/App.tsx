@@ -1,16 +1,19 @@
-import PostList from "./components/PostList/PostList";
-
+//import "./App.css"
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes"
+import { AuthContextProvider } from "./components/Auth/AuthContext";
 function App() {
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center">
-      <header className="bg-blue-600 w-full p-4 text-white text-center text-2xl">
-        Forum
-      </header>
-      <main className="w-full max-w-4xl mt-8 px-4">
-        <PostList />
+    <>
+     <div className="App">
+      <main>
+      <AuthContextProvider>
+        <RouterProvider router={router} />
+      </AuthContextProvider>
       </main>
     </div>
+    </>
   );
 }
 
