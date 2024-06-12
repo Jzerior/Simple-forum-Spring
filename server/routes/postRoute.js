@@ -3,8 +3,11 @@ var router = express.Router();
 
 var postController = require("../controllers/postController")
 
-router.post('/add',postController.addPost)
 router.get('/allPosts',postController.allPosts)
-router.put('/posts/:id', postController.updatePost)
+router.get('/post/:id',postController.post)
+router.post('/add',postController.addPost)
+router.post('/update/:id', postController.updatePost)
+router.post('/like/:id',postController.likePost)
+router.post('/delete/:id',postController.deletePost)
 
 module.exports = router;
