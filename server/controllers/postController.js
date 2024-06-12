@@ -116,6 +116,25 @@ module.exports = {
             });
         }
     },
+    async postPage(req, res) {
+        const page = parseInt(req.params) || 1;
+        const limit = 5;
+        const skip = (page - 1) * limit;
+        //const endIndex = page * limit;
+        //const totalPosts = await Post.countDocuments();
+        try {
+            const posts = await Post.find().skip(skip).limit(limit);
+            res.status(200).json({
+                status: 200,
+                data: posts,
+            });
+        } catch (err) {
+            res.status(400).json({
+                status: 400,
+                message: err.message.toString(),
+            });
+        }
+    },
     async likePost(req, res) {
         const { id } = req.params;
         const { login } = req.body;
