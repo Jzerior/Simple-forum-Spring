@@ -58,12 +58,56 @@ module.exports = {
             });
         }
     },
+    async deletePost(req, res) {
+        const { id } = req.params;
+
+        try {
+            const post = await Post.findByIdAndDelete(id);
+            if (!post) {
+                return res.status(404).json({
+                    status: 404,
+                    message: "Player not found",
+                });
+            }
+
+            res.status(200).json({
+                status: 200,
+                message: "Player deleted successfully",
+            });
+        } catch (err) {
+            res.status(400).json({
+                status: 400,
+                message: err.message.toString(),
+            });
+        }
+    },
     async allPosts(req,res){
         try {
             const posts = await Post.find();
             res.status(200).json({
                 status: 200,
                 data: posts,
+            });
+        } catch (err) {
+            res.status(400).json({
+                status: 400,
+                message: err.message.toString(),
+            });
+        }
+    },
+    async post(req, res) {
+        const { id } = req.params;
+        try {
+            const post = await Post.findById( id );
+            if (!post) {
+                return res.status(404).json({
+                    status: 404,
+                    message: "Player not found",
+                });
+            }
+            res.status(200).json({
+                status: 200,
+                data: player,
             });
         } catch (err) {
             res.status(400).json({
