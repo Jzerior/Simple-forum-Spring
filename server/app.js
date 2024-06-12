@@ -8,6 +8,7 @@ const database = require("./database/mongoose.js")
 var app = express();
 
 var authRouter = require('./routes/authRoute')
+var postRouter = require("./routes/postRoute")
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -19,7 +20,7 @@ app.use(cors({
 }));
 
 app.use('/', authRouter)
-
+app.use('/post',postRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

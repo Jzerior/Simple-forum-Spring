@@ -22,10 +22,24 @@ module.exports = {
                 message: "Post was added successfully",
             });
         }catch (err) {
-        res.status(400).json({
-            status: 400,
-            message: err.message.toString(),
-        });
-    }
+            res.status(400).json({
+                status: 400,
+                message: err.message.toString(),
+            });
+        }
+    },
+    async allPosts(req,res){
+        try {
+            const posts = await Post.find();
+            res.status(200).json({
+                status: 200,
+                data: posts,
+            });
+        } catch (err) {
+            res.status(400).json({
+                status: 400,
+                message: err.message.toString(),
+            });
+        }
     }
 }
