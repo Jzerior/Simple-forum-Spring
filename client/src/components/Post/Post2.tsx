@@ -1,13 +1,34 @@
 import { CommentSection } from "../CommentSection/CommentSection"
 import { useLocation } from 'react-router-dom';
 interface Props {
-    id: number;
+    _id: string;
     name: string;
     content: string;
     author: string;
+    onDelete: (postId: string) => void;
   }
-export const Post2 = ({ id, name, content, author }:Props) => {
+export const Post2 = ({ _id, name, content, author, onDelete }:Props) => {
     const location = useLocation();
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/post/delete/${_id}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const dataa = await response.json();
+            if (response.ok) {
+              console.log(`Success: ${dataa.message}`);
+              onDelete(_id)
+              //setPlayers(players.filter(player => player._id !== event.target.name));
+            } else {
+              console.log(`Error: ${dataa.message}`);
+            }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+    }
     return(
         <div id="readProductModal"  className="flex justify-center items-center md:inset-0 h-modal md:h-full">
             <div className="relative p-4 w-full max-w-xl h-full md:h-auto">
@@ -38,7 +59,7 @@ export const Post2 = ({ id, name, content, author }:Props) => {
                                     Preview
                                 </button>
                             </div>
-                            <button type="button" className="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                            <button type="button" className="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={handleDelete}>
                                 <svg aria-hidden="true" className="w-5 h-5 mr-1.5 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                 Delete
                             </button>

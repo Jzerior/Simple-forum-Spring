@@ -9,6 +9,6 @@ router.get('/postPage/:page',postController.postPage)
 router.post('/add',postController.addPost)
 router.post('/update/:id', postController.updatePost)
 router.post('/like/:id',postController.likePost)
-router.post('/delete/:id',postController.deletePost)
+router.get('/delete/:id',postController.deletePost)
 
 module.exports = router;

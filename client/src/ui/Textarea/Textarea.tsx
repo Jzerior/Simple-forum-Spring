@@ -7,14 +7,15 @@ type Props = {
     error?: FieldError;
     inputClassName?:string;
     labelClassName?:string;
-} & ComponentPropsWithRef<'input'>
+    value?:string;
+} & ComponentPropsWithRef<'textarea'>
 
-export const Input = forwardRef(({ label,error,inputClassName,labelClassName, ...rest } : Props, ref: Ref<HTMLInputElement>) => {
+export const Textarea = forwardRef(({ label,error,inputClassName,labelClassName,value, ...rest } : Props, ref: Ref<HTMLTextAreaElement>) => {
     const id = useId();
     return (
         <div className='my-2'>
                 <label htmlFor={id} className={labelClassName}>{label}</label>
-                <input id={id} ref={ref}  {...rest} className={inputClassName}/>
+                <textarea id={id} ref={ref}  {...rest} value={value} className={inputClassName}/>
                 {error && <p className='text-red-500'>{error.message}</p>}
             </div>
     )

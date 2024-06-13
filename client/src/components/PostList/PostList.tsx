@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Post from '../Post/Post';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Post2 } from '../Post/Post2';
+import { Post3 } from '../Post/Post3';
 
 interface PostData {
   id: number;
@@ -26,8 +25,8 @@ const PostList: React.FC = () => {
       console.log(data.data.length)
       if (data.data.length === 0) {
         setHasMore(false);
-        console.log("xd")
       } else {
+        console.log(data.data)
         setPosts((prevPosts) => [...prevPosts, ...data.data]);
       }
     } catch (error) {
@@ -37,6 +36,10 @@ const PostList: React.FC = () => {
 
   const fetchMoreData = () => {
     setPage((prevPage) => prevPage + 1);
+  };
+
+  const removePost = (postId: string) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
   };
 
   return (
@@ -49,7 +52,7 @@ const PostList: React.FC = () => {
         endMessage={<p style={{ textAlign: 'center' }}>You have seen it all</p>}
       >
         {posts.map((post) => (
-          <Post2 key={post.id} {...post} />
+          <Post3 key={post.id} {...post} onDelete={removePost} />
         ))}
       </InfiniteScroll>
     </div>
