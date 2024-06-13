@@ -27,6 +27,7 @@ export const LoginForm = () => {
         const token = responseData.accessToken;
         localStorage.setItem('jwtToken', token);
         logIn()
+        window.location.href = '/';
         setMessage(`Success: ${responseData.message}`);
       } else {
         setMessage(`Error: ${responseData.message}`);

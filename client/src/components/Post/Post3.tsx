@@ -1,14 +1,16 @@
-import React, { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from "react";
 import { Textarea } from "../../ui/Textarea";
 import { CommentSection } from "../CommentSection/CommentSection";
 import { useLocation } from 'react-router-dom';
 import { Input } from "../../ui/Input";
+import { useAuthContext } from "../Auth/AuthContext";
 
 interface Props {
   _id: string;
   name: string;
   content: string;
   author: string;
+  likes:[string];
   onDelete: (postId: string) => void;
 }
 
@@ -17,7 +19,8 @@ type EditData = {
   contente: string;
 }
 
-export const Post3 = ({ _id, name, content, author, onDelete }: Props) => {
+export const Post3 = ({ _id, name, content, author,likes, onDelete }: Props) => {
+  const { username } = useAuthContext();
   const location = useLocation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [edit, setEdit] = useState(false);
@@ -28,9 +31,25 @@ export const Post3 = ({ _id, name, content, author, onDelete }: Props) => {
 
   const { namee, contente } = formData;
 
-  const handleSumbit: FormEventHandler = (event) => {
-    event.preventDefault(); // poprawione: funkcja preventDefault() musi być wywołana jako metoda
-    console.log(formData);
+  const handleSumbit: FormEventHandler = async (event) => {
+    event.preventDefault();
+    const response = await fetch(`http://localhost:5000/post/update/${_id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          name : namee,
+          content : contente,
+          author: username,
+      }),
+    });
+    const responseData = await response.json();
+      if (response.ok) {
+        console.log(`Success: ${responseData.message}`);
+      } else {
+        console.log(`Error: ${responseData.message}`);
+      }
   }
 
   const handleChangeName: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -73,6 +92,28 @@ export const Post3 = ({ _id, name, content, author, onDelete }: Props) => {
     setEdit(!edit);
   }
 
+  const handleLike = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/post/like/${_id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login: username,
+      }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log(`Success: ${data.message}`);
+      } else {
+        console.log(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -113,8 +154,6 @@ export const Post3 = ({ _id, name, content, author, onDelete }: Props) => {
                   onChange={handleChangeContent} // poprawione: użycie handleChangeContent dla Textarea
                 />
               </dd>
-              <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Category</dt>
-              <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">Electronics/PC</dd>
             </dl>
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3 sm:space-x-4">
@@ -123,8 +162,8 @@ export const Post3 = ({ _id, name, content, author, onDelete }: Props) => {
                   Edit
                 </button>
                 <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add</button>
-                <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                  Preview
+                <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={handleLike}>
+                 Likes - {likes.length} 
                 </button>
               </div>
               <button type="button" className="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={handleDelete}>

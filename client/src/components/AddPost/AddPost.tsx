@@ -13,7 +13,7 @@ export const AddPost = () => {
     const [message, setMessage] = useState('');
     const { username } = useAuthContext();
 
-    const handleLoginForm: SubmitHandler<LoginFormData> = async (data) => {
+    const handleAddForm: SubmitHandler<LoginFormData> = async (data) => {
         const response = await fetch('http://localhost:5000/post/add', {
         method: 'POST',
         headers: {
@@ -28,6 +28,7 @@ export const AddPost = () => {
       const responseData = await response.json();
       if (response.ok) {
         setMessage(`Success: ${responseData.message}`);
+        window.location.href = '/';
       } else {
         setMessage(`Error: ${responseData.message}`);
       }
@@ -42,7 +43,7 @@ export const AddPost = () => {
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Add new post
                     </h1>
-                    <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(handleLoginForm)}>
+                    <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(handleAddForm)}>
                         <div>
                             <Input
                                 label="Post topic"

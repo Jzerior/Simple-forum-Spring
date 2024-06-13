@@ -3,10 +3,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { Post3 } from '../Post/Post3';
 
 interface PostData {
-  id: number;
+  _id: string;
   name: string;
   content: string;
   author: string;
+  likes: [string];
 }
 
 const PostList: React.FC = () => {
@@ -52,7 +53,7 @@ const PostList: React.FC = () => {
         endMessage={<p style={{ textAlign: 'center' }}>You have seen it all</p>}
       >
         {posts.map((post) => (
-          <Post3 key={post.id} {...post} onDelete={removePost} />
+          <Post3 key={post._id} {...post} onDelete={removePost} />
         ))}
       </InfiniteScroll>
     </div>
