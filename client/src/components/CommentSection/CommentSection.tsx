@@ -17,10 +17,7 @@ interface Props {
 }
 
 export const CommentSection = ({ comments, commentsCount, postID,refresh }: Props) => {
-    const [commentss, setcomments] = useState<comment[]>(comments);
-    const removeComment = (commentId: string) => {
-        setcomments((prevComments) => prevComments.filter((comment) => comment._id !== commentId));
-      };
+
     return (
     <section className="bg-white dark:bg-gray-900 py-4 antialiased mt-4">
       <div className="max-w-2xl mx-auto px-4">
@@ -30,8 +27,8 @@ export const CommentSection = ({ comments, commentsCount, postID,refresh }: Prop
           </h2>
         </div>
         <AddComment postID={postID} refresh={refresh}/>
-        {commentss?.map((comment) => (
-          <Comment key={comment._id} comment={comment} onDelete={removeComment} postID={postID}/>
+        {comments?.map((comment) => (
+          <Comment key={comment._id} comment={comment} onDelete={refresh} postID={postID}/>
         ))}
       </div>
     </section>

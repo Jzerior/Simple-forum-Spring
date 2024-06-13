@@ -29,7 +29,7 @@ export const PostDetails = () => {
   }
   useEffect(() => {
     fetchPost();
-  }, [load]);
+  }, []);
 
   const fetchPost = async () => {
     try {
@@ -57,7 +57,7 @@ export const PostDetails = () => {
   return(
       <>
           <Post3 {...data} onDelete={removePost} />
-          <CommentSection comments={data.comments} commentsCount={data.commentsCount} postID={data._id} refresh={refresh}/>
+          <CommentSection comments={data.comments} commentsCount={data.commentsCount} postID={data._id} refresh={fetchPost}/>
       </>
     )
 };
