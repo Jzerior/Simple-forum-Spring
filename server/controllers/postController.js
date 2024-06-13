@@ -102,16 +102,20 @@ module.exports = {
     async post(req, res) {
         const { id } = req.params;
         try {
-            const post = await Post.findById( id );
+            const post = await Post.findById(id);
             if (!post) {
                 return res.status(404).json({
                     status: 404,
                     message: "Post not found",
                 });
             }
+            const postsupdated = {
+                ...post.toObject(),
+                commentsCount: post.comments.length,
+            };
             res.status(200).json({
                 status: 200,
-                data: post,
+                data: postsupdated,
             });
         } catch (err) {
             res.status(400).json({

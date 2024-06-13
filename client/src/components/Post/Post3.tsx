@@ -1,9 +1,15 @@
 import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from "react";
 import { Textarea } from "../../ui/Textarea";
-import { CommentSection } from "../CommentSection/CommentSection";
 import { useLocation } from 'react-router-dom';
 import { Input } from "../../ui/Input";
 import { useAuthContext } from "../Auth/AuthContext";
+
+type comment = {
+  _id: string;
+  content: string;
+  likes:[string];
+  author:string;
+}
 
 interface Props {
   _id: string;
@@ -11,6 +17,7 @@ interface Props {
   content: string;
   author: string;
   likes:[string];
+  comments?:[comment];
   commentsCount: string;
   onDelete: (postId: string) => void;
 }
@@ -164,9 +171,9 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete
             <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={handleLike}>
                  Likes:{likeCount} 
                 </button>
-                <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={handleDetails}>
+                {location.pathname == "/" && <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={handleDetails}>
                  Comments:{commentsCount} 
-                </button>
+                </button>}
             </div>
             <div className={` ${username == author ? 'block' : 'hidden'} flex justify-between items-center`}>
               <div className={`flex items-center space-x-3 sm:space-x-4`}>
@@ -181,7 +188,6 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete
                                 Delete
               </button>
             </div>
-            {location.pathname !== "/" && <CommentSection />}
           </form>
         </div>
       </div>
