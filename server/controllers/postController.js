@@ -160,7 +160,7 @@ module.exports = {
             res.status(200).json({
                 status: 200,
                 message: "Player updated successfully",
-                data: updatedPost
+                data: updatedPost.likes.length
             });
         } catch (err) {
             res.status(400).json({
