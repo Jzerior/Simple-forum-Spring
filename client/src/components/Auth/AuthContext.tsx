@@ -59,7 +59,6 @@ const useAuth = () => {
     useEffect(() => {
       const interval = setInterval(() => {
         if(expiration != 0){
-          console.log(Math.floor(Date.now() / 1000))
          if(( expiration < Math.floor(Date.now() / 1000))){
           console.log("Automatyczne wylogowanie")
           logOut()

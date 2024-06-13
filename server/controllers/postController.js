@@ -124,12 +124,12 @@ module.exports = {
         const totalPosts = await Post.countDocuments();
         console.log(page)
         try {
-            if(skip<totalPosts){
+            //if(skip<totalPosts){
             const posts = await Post.find().skip(skip).limit(limit);
             res.status(200).json({
                 status: 200,
                 data: posts,
-            });}
+            });//}
         } catch (err) {
             res.status(400).json({
                 status: 400,
