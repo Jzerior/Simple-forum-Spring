@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Post3 } from '../Post/Post3';
 
@@ -8,9 +8,10 @@ interface PostData {
   content: string;
   author: string;
   likes: [string];
+  commentsCount: string;
 }
 
-const PostList: React.FC = () => {
+const PostList = () => {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);

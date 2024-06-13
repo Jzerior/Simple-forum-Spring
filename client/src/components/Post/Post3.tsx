@@ -11,6 +11,7 @@ interface Props {
   content: string;
   author: string;
   likes:[string];
+  commentsCount: string;
   onDelete: (postId: string) => void;
 }
 
@@ -19,7 +20,7 @@ type EditData = {
   contente: string;
 }
 
-export const Post3 = ({ _id, name, content, author,likes, onDelete }: Props) => {
+export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete }: Props) => {
   const { username } = useAuthContext();
   const location = useLocation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -115,7 +116,9 @@ export const Post3 = ({ _id, name, content, author,likes, onDelete }: Props) => 
       console.error("Error:", error);
     }
   }
-
+  const handleDetails = () => {
+    window.location.href = '/post/'+_id;
+  }
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -161,8 +164,8 @@ export const Post3 = ({ _id, name, content, author,likes, onDelete }: Props) => 
             <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={handleLike}>
                  Likes:{likeCount} 
                 </button>
-                <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={handleLike}>
-                 Comments:{likeCount} 
+                <button type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={handleDetails}>
+                 Comments:{commentsCount} 
                 </button>
             </div>
             <div className={` ${username == author ? 'block' : 'hidden'} flex justify-between items-center`}>

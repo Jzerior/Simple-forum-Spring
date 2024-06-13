@@ -2,11 +2,9 @@ import { useState } from "react";
 import { routes } from "../../routes";
 import { MenuNavLink } from "../../ui/MenuNavLink";
 import { UserMenu } from "../UserMenu";
-import { useAuthContext } from "../Auth/AuthContext";
 
 export const Menu = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const { isLoggedIn } = useAuthContext();
     const toggleVisibility = () => {
       setIsVisible(!isVisible);
     };

@@ -1,5 +1,5 @@
-import { AddPost } from '../AddPost/AddPost';
+import { PostDetails } from '../PostDetails/PostDetails';
 
 export const PostPage = () => {
-    return <AddPost />;
+    return <PostDetails />;
   };

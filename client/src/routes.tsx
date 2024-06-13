@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "./Layout";
-import { LoginFormPage,  HomePage,RegistrationFormPage, NewPostPage } from './components/Pages'
+import { LoginFormPage,  HomePage,RegistrationFormPage, NewPostPage, PostPage } from './components/Pages'
 
 export const routes = {
   HOME: {
@@ -15,6 +15,9 @@ export const routes = {
   },
   NEWPOST: {
     path: "/newpost"
+  },
+  POSTDETAILS: {
+    path: "/post/:id"
   }
 };
 
@@ -38,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: routes.NEWPOST.path,
         element: <NewPostPage />,
+      },
+      {
+        path: routes.POSTDETAILS.path,
+        element: <PostPage />,
       },
     ],
   },

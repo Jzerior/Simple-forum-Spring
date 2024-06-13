@@ -66,13 +66,13 @@ module.exports = {
             if (!post) {
                 return res.status(404).json({
                     status: 404,
-                    message: "Player not found",
+                    message: "post not found",
                 });
             }
 
             res.status(200).json({
                 status: 200,
-                message: "Player deleted successfully",
+                message: "post deleted successfully",
             });
         } catch (err) {
             res.status(400).json({
@@ -84,9 +84,13 @@ module.exports = {
     async allPosts(req,res){
         try {
             const posts = await Post.find();
+            const postsupdated = posts.map(post => ({
+                ...post._doc,
+                commentsCount: post.comments.length
+            }));
             res.status(200).json({
                 status: 200,
-                data: posts,
+                data: postsupdated,
             });
         } catch (err) {
             res.status(400).json({
@@ -102,12 +106,12 @@ module.exports = {
             if (!post) {
                 return res.status(404).json({
                     status: 404,
-                    message: "Player not found",
+                    message: "Post not found",
                 });
             }
             res.status(200).json({
                 status: 200,
-                data: player,
+                data: post,
             });
         } catch (err) {
             res.status(400).json({
@@ -120,14 +124,16 @@ module.exports = {
         const {page} = req.params;
         const limit = 5;
         const skip = (page - 1) * limit;
-        //const endIndex = page * limit;
-        const totalPosts = await Post.countDocuments();
         console.log(page)
         try {
             const posts = await Post.find().skip(skip).limit(limit);
+            const postsupdated = posts.map(post => ({
+                ...post._doc,
+                commentsCount: post.comments.length
+            }));
             res.status(200).json({
                 status: 200,
-                data: posts,
+                data: postsupdated,
             });
         } catch (err) {
             res.status(400).json({
@@ -159,7 +165,7 @@ module.exports = {
             const updatedPost = await post.save();
             res.status(200).json({
                 status: 200,
-                message: "Player updated successfully",
+                message: "post updated successfully",
                 data: updatedPost.likes.length
             });
         } catch (err) {
