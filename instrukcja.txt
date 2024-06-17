@@ -1,0 +1,5 @@
+Żeby uruchomić aplikację wymagany jest node w wersji 20, oraz zainstalowanie globalnie nodemon.
+
+1.Należy otworzyć dwa terminale cmd
+2. W jednym należy przejść do katalogu server, w drugim do katalogu client
+3. na obu należy wpisać "npm install", a po wykonaniu pobierania "npm run dev"
