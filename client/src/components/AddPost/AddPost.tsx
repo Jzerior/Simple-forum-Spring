@@ -12,7 +12,7 @@ export const AddPost = () => {
     const { register, handleSubmit, formState: {errors}} = useForm<LoginFormData>({ resolver: zodResolver(validationSchema)});
     const [message, setMessage] = useState('');
     const { username } = useAuthContext();
-
+    
     const handleAddForm: SubmitHandler<LoginFormData> = async (data) => {
         const response = await fetch('http://localhost:5000/post/add', {
         method: 'POST',
@@ -36,7 +36,7 @@ export const AddPost = () => {
         };
 
     return (
-    <section className="bg-gray-50 dark:bg-gray-900 ">
+    <section className="bg-gray-50 dark:bg-gray-900 my-5">
         <div className="flex flex-col items-center justify-center  px-6 py-8 mx-auto lg:py-0">
             <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-xl xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

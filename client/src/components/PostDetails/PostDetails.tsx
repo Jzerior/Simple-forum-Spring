@@ -53,7 +53,7 @@ export const PostDetails = () => {
     window.location.href = '/';
   };
 
-  // Renderuj Post3 tylko wtedy, gdy dane są załadowane
+
   return(
       <>
           <Post3 {...data} onDelete={removePost} />
