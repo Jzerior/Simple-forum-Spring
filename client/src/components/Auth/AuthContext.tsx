@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from 'jwt-decode';
 
 type AuthContextType = {
   isLoggedIn: boolean;
@@ -8,10 +7,6 @@ type AuthContextType = {
   logOut: () => void;
 };
 
-type JwtPayLoad = {
-  login:string
-  exp: number
-}
 export const AuthContext = createContext<AuthContextType | null>(null);
 AuthContext.displayName = "AuthContext";
 
@@ -31,13 +26,12 @@ const useAuth = () => {
     const [username, setuserName ] = useState ("");
     const [expiration, setExpiration] = useState(0);
     const logIn = () => {
-      const token = localStorage.getItem('jwtToken');
+      const token= localStorage.getItem('jwtToken');
       if(token != null){
         setIsLoggedIn(true);
-        const decodedToken = jwtDecode<JwtPayLoad>(token);
-        console.log(decodedToken);
-        setuserName(decodedToken.login)
-        setExpiration(decodedToken.exp)
+        const parsedToken=JSON.parse(token)
+        setuserName(parsedToken.login)
+        setExpiration(parsedToken.exp)
       }
     }
     const logOut = () => {
@@ -51,9 +45,9 @@ const useAuth = () => {
         const token = localStorage.getItem('jwtToken');
         if (token != null) {
           setIsLoggedIn(true);
-          const decodedToken = jwtDecode<JwtPayLoad>(token);
-          setuserName(decodedToken.login)
-          setExpiration(decodedToken.exp)
+          const parsedToken=JSON.parse(token)
+          setuserName(parsedToken.login)
+        setExpiration(parsedToken.exp)
         }
     }, []);
     useEffect(() => {

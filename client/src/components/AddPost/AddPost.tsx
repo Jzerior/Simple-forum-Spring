@@ -12,10 +12,10 @@ export const AddPost = () => {
     const { register, handleSubmit, formState: {errors}} = useForm<LoginFormData>({ resolver: zodResolver(validationSchema)});
     const [message, setMessage] = useState('');
     const { username } = useAuthContext();
-    
     const handleAddForm: SubmitHandler<LoginFormData> = async (data) => {
         const response = await fetch('http://localhost:5000/post/add', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

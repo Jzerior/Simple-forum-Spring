@@ -17,6 +17,7 @@ export const LoginForm = () => {
     const handleLoginForm: SubmitHandler<LoginFormData> = async (data) => {
         const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -25,7 +26,9 @@ export const LoginForm = () => {
       const responseData = await response.json();
       if (response.ok) {
         const token = responseData.accessToken;
-        localStorage.setItem('jwtToken', token);
+        console.log(responseData.accessToken)
+        console.log(token)
+        localStorage.setItem('jwtToken', JSON.stringify(token));
         logIn()
         window.location.href = '/';
         setMessage(`Success: ${responseData.message}`);

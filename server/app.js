@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var bodyParser = require('body-parser')
 const database = require("./database/mongoose.js")
 var app = express();
 
@@ -13,10 +14,12 @@ var postRouter = require("./routes/postRoute")
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: '*' // Zmień na adres swojej aplikacji frontendowej
+  origin: 'http://localhost:5173',
+  credentials: true,
 }));
 
 app.use('/', authRouter)

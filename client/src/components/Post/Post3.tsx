@@ -44,6 +44,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete
     event.preventDefault();
     const response = await fetch(`http://localhost:5000/post/update/${_id}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -56,6 +57,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete
     const responseData = await response.json();
       if (response.ok) {
         console.log(`Success: ${responseData.message}`);
+        handleEdit()
       } else {
         console.log(`Error: ${responseData.message}`);
       }
@@ -81,6 +83,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete
     try {
       const response = await fetch(`http://localhost:5000/post/delete/${_id}`, {
         method: "GET",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
@@ -117,6 +120,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete
         body: JSON.stringify({
           login: username,
       }),
+        credentials: 'include'
       });
       const data = await response.json();
       if (response.ok) {

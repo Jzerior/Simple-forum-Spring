@@ -78,17 +78,25 @@ module.exports = {
                 process.env.TOKEN_SECRET,
                 { expiresIn: '1h' }
             )
-            res.cookie('JWT', accessToken, {
-                maxAge: 600,
+            const infoToken =
+                {
+                    //id: loggingUser?.id,
+                    login: user?.login,
+                    email: user?.email,
+                    role: user?.role
+                }
+            res.cookie('jwt', accessToken, {
+                maxAge: 3600000,
                 secure: false,
-                httpOnly: true
-            })
-
+                httpOnly: true,
+                sameSite: 'strict'
+            });
+            console.log('Setting cookie:', accessToken);
             // If both checks pass, return a success message
             res.status(200).json({
                 status: 200,
                 message: "Login successful",
-                accessToken: accessToken,
+                accessToken: infoToken,
             });
         } catch (err) {
             res.status(500).json({
@@ -116,6 +124,21 @@ module.exports = {
             } else {
                 return res.status(403).json({ message: 'Unauthorized access' });
             }
+        }
+    },
+    // Middleware do weryfikacji tokena JWT
+    verifyToken(req, res, next){
+        const token = req.cookies.jwt;
+        console.log(req.cookies)
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+        try {
+            const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+            req.user = decoded;
+            next();
+        } catch (error) {
+            return res.status(401).json({ message: 'Invalid token '+error });
         }
     }
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Post3 } from "../Post/Post3";
 import { CommentSection } from "../CommentSection/CommentSection";
-import { AddComment } from "../CommentSection/AddComment";
+
 type comment = {
   _id: string;
   content: string;
@@ -23,10 +23,6 @@ export const PostDetails = () => {
   const [data, setData] = useState<PostData>();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const [load, setLoad] = useState(true);
-  const refresh = () => {
-    setLoad(!load)
-  }
   useEffect(() => {
     fetchPost();
   }, []);

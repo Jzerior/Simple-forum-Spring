@@ -20,6 +20,7 @@ export const AddComment = ({postID,refresh}:Props) => {
     const handleAddForm: SubmitHandler<LoginFormData> = async (data) => {
         const response = await fetch(`http://localhost:5000/post/comment/${postID}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

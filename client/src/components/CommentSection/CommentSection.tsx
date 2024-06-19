@@ -1,6 +1,6 @@
 import { Comment } from "./Comment";
 import { AddComment } from "./AddComment";
-import { useState } from "react";
+import { useAuthContext } from "../Auth/AuthContext";
 
 type comment = {
   _id: string;
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const CommentSection = ({ comments, commentsCount, postID,refresh }: Props) => {
-
+    const {isLoggedIn} = useAuthContext()
     return (
     <section className="bg-white dark:bg-gray-900 py-4 antialiased mt-4">
       <div className="max-w-2xl mx-auto px-4">
@@ -26,7 +26,11 @@ export const CommentSection = ({ comments, commentsCount, postID,refresh }: Prop
             Discussion ({commentsCount})
           </h2>
         </div>
-        <AddComment postID={postID} refresh={refresh}/>
+        {isLoggedIn ? (
+                          <>
+                            <AddComment postID={postID} refresh={refresh}/>
+                          </>
+                          ) : (<></>)}
         {comments?.map((comment) => (
           <Comment key={comment._id} comment={comment} onDelete={refresh} postID={postID}/>
         ))}

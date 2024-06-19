@@ -33,6 +33,9 @@ module.exports = {
         const { name, content, author } = req.body;
 
         try {
+            if(req.user.login != author){
+                return res.status(403).json({ message: 'Unauthorized access' });
+            }
             const post = await Post.findByIdAndUpdate(
                 id,
                 { name, content, author },
@@ -45,7 +48,6 @@ module.exports = {
                     message: "Post not found",
                 });
             }
-
             res.status(200).json({
                 status: 200,
                 message: "Post was updated successfully",
