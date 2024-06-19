@@ -3,6 +3,7 @@ import { Textarea } from "../../ui/Textarea";
 import { useLocation } from 'react-router-dom';
 import { Input } from "../../ui/Input";
 import { useAuthContext } from "../Auth/AuthContext";
+import { format } from "date-fns";
 
 type comment = {
   _id: string;
@@ -19,6 +20,7 @@ interface Props {
   likes:[string];
   comments?:[comment];
   commentsCount: string;
+  dateAdded:Date;
   onDelete: (postId: string) => void;
 }
 
@@ -27,7 +29,7 @@ type EditData = {
   contente: string;
 }
 
-export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete }: Props) => {
+export const Post3 = ({ _id, name, content, author,likes,commentsCount,dateAdded, onDelete }: Props) => {
   const { username } = useAuthContext();
   const location = useLocation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -162,7 +164,8 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount, onDelete
                     onChange={handleChangeName} // poprawione: użycie handleChangeName dla Input
                   />
                 </h2>
-                <p className="font-light text-gray-500 sm:mb-5 dark:text-gray-400">{author}</p>
+                <p className="font-light text-gray-500  dark:text-gray-400">{author}</p>
+                <p className="font-light text-gray-500  dark:text-gray-400">{format(new Date(dateAdded), 'dd.MM.yyyy')}</p>
               </div>
             </div>
             <dl>

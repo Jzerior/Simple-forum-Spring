@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { useAuthContext } from "../Auth/AuthContext";
 
 type comment = {
@@ -5,6 +6,7 @@ type comment = {
     content: string;
     likes:[string];
     author:string;
+    dateAdded:Date;
   }
 
   type Props = {
@@ -26,12 +28,12 @@ export const Comment = ({postID,comment,onDelete}:Props) => {
                 commentId:comment._id
               }),
           });
-          const dataa = await response.json();
+          const data = await response.json();
           if (response.ok) {
-            console.log(`Success: ${dataa.message}`);
+            console.log(`Success: ${data.message}`);
             onDelete(comment._id);
           } else {
-            console.log(`Error: ${dataa.message}`);
+            console.log(`Error: ${data.message}`);
           }
         } catch (error) {
           console.error("Error:", error);
@@ -46,7 +48,7 @@ export const Comment = ({postID,comment,onDelete}:Props) => {
                                     className="mr-2 w-6 h-6 rounded-full"
                                     src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                     alt="Michael Gough"></img>{comment.author}</p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Feb. 8, 2022</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">{format(new Date(comment.dateAdded), 'dd.MM.yyyy')}</p>
                         </div>
                         {username==comment.author ? (
                           <>

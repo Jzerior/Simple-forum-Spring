@@ -3,6 +3,7 @@ import { useForm, type SubmitHandler } from "react-hook-form"
 import { LoginFormData,validationSchema } from "./types";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react';
+import { useAuthContext } from "../Auth/AuthContext";
 
 export const RegistrationForm = () => {
     const inputClass = "bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -10,7 +11,7 @@ export const RegistrationForm = () => {
 
     const { register, handleSubmit, formState: {errors}} = useForm<LoginFormData>({ resolver: zodResolver(validationSchema)});
     const [message, setMessage] = useState('');
-
+    const { logIn } = useAuthContext()
     const handleRegistrationForm: SubmitHandler<LoginFormData> = async (data) => {
         console.log(JSON.stringify(data));
         const response = await fetch('http://localhost:5000/register', {
@@ -23,6 +24,26 @@ export const RegistrationForm = () => {
           const responseData = await response.json();
           if (response.ok) {
             setMessage(`Success: ${responseData.message}`);
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+              });
+              const rdata = await response.json();
+              if (response.ok) {
+                const token = rdata.accessToken;
+                console.log(rdata.accessToken)
+                console.log(token)
+                localStorage.setItem('jwtToken', JSON.stringify(token));
+                logIn()
+                window.location.href = '/';
+                setMessage(`Success: ${rdata.message}`);
+              } else {
+                setMessage(`Error: ${rdata.message}`);
+              }
           } else {
             setMessage(`Error: ${responseData.message}`);
           }
