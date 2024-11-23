@@ -33,6 +33,8 @@ public class Post {
     @JoinColumn(name = "post_id")
     private List<Comment> comments = new ArrayList<>();
 
+    @Transient
+    private int commentsCount;
     @Column(name = "date_added", nullable = false)
     private LocalDateTime dateAdded = LocalDateTime.now();
 
@@ -91,6 +93,14 @@ public class Post {
 
     public void setDateAdded(LocalDateTime dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(int commentsCount) {
+        this.commentsCount = commentsCount;
     }
 }
 

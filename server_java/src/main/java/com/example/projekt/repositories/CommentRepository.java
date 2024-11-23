@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    // Znajdź wszystkie komentarze dla konkretnego postu
-    List<Comment> findByPostId(Long postId);
+//    // Znajdź wszystkie komentarze dla konkretnego postu
+//    List<Comment> findByPostId(Long postId);
 
     // Posortowane komentarze po dacie dodania (np. najnowsze)
     List<Comment> findAllByOrderByDateAddedDesc();
