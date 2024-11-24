@@ -29,10 +29,10 @@ export const PostDetails = () => {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/post/post/${id}`);
+      const response = await fetch(`http://localhost:8080/api/posts/${id}`);
       const responseData = await response.json();
       if (response.ok) {
-        setData(responseData.data);
+        setData(responseData);
         setLoading(false);
       } else {
         console.log(`Error: ${responseData.message}`);
