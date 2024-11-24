@@ -22,15 +22,18 @@ const PostList = () => {
 
   const fetchPosts = async (page: number) => {
     try {
-      const response = await fetch(`http://localhost:5000/post/postPage/${page}`);
+      console.log("xd")
+      const response = await fetch(`http://localhost:8080/api/posts`);
       const data = await response.json();
-      console.log(data.data.length)
-      if (data.data.length === 0) {
-        setHasMore(false);
-      } else {
-        console.log(data.data)
-        setPosts((prevPosts) => [...prevPosts, ...data.data]);
-      }
+      console.log(data.length)
+      // if (data.length === 0) {
+      //   setHasMore(false);
+      // } else {
+         console.log(data)
+      //   setPosts((prevPosts) => [...prevPosts, ...data]);
+      // }
+      setPosts(data)
+      console.log(posts)
     } catch (error) {
       console.error('Error fetching posts:', error);
     }

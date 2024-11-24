@@ -1,6 +1,8 @@
 package com.example.projekt.controllers;
 
+import com.example.projekt.ApiResponse;
 import com.example.projekt.models.Post;
+import com.example.projekt.models.PostDTO;
 import com.example.projekt.repositories.PostRepository;
 import com.example.projekt.repositories.UserRepository;
 import com.example.projekt.services.PostService;
@@ -19,6 +21,12 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @GetMapping
+    public ResponseEntity<?> allPosts(){
+        List<PostDTO> posts=postService.getAllPosts();
+        //ApiResponse<List<Post>> response = new ApiResponse<>(200, posts);
+        return ResponseEntity.ok(posts);
+    }
     @PostMapping
     public ResponseEntity<?> addPost(@RequestBody Post post) {
         Post savedPost = postService.addPost(post);
