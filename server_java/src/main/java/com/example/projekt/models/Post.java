@@ -71,8 +71,8 @@ public class Post {
         this.likes = likes;
     }
 
-    public User getAuthor() {
-        return author;
+    public String getAuthor() {
+        return author.getLogin();
     }
 
     public void setAuthor(User author) {

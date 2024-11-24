@@ -1,7 +1,6 @@
 package com.example.projekt.services;
 
 import com.example.projekt.models.Post;
-import com.example.projekt.models.PostDTO;
 import com.example.projekt.repositories.PostRepository;
 import com.example.projekt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -34,7 +32,7 @@ public class PostService {
             Post post = postOpt.get();
 
             // Sprawdzamy, czy użytkownik jest autorem
-            if (!post.getAuthor().getLogin().equals(login)) {
+            if (!post.getAuthor().equals(login)) {
                 throw new SecurityException("Unauthorized access");
             }
 
@@ -56,12 +54,11 @@ public class PostService {
     }
 
     // Pobranie wszystkich postów
-    public List<PostDTO> getAllPosts() {
-            return postRepository.findAll().stream()
-                    .map(post -> new PostDTO(post))
-                    .collect(Collectors.toList());
-        }
-//        posts.forEach(post -> post.setCommentsCount(post.getComments().size()));
+    public List<Post> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        posts.forEach(post -> post.setCommentsCount(post.getComments().size()));
+        return posts;
+    }
 
     // Pobranie pojedynczego postu po ID
     public Optional<Post> getPostById(Long id) {

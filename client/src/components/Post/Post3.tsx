@@ -13,7 +13,7 @@ type comment = {
 }
 
 interface Props {
-  _id: string;
+  id: string;
   name: string;
   content: string;
   author: string;
@@ -29,7 +29,7 @@ type EditData = {
   contente: string;
 }
 
-export const Post3 = ({ _id, name, content, author,likes,commentsCount,dateAdded, onDelete }: Props) => {
+export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded, onDelete }: Props) => {
   const { username } = useAuthContext();
   const location = useLocation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -44,7 +44,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount,dateAdded
 
   const handleSumbit: FormEventHandler = async (event) => {
     event.preventDefault();
-    const response = await fetch(`http://localhost:5000/post/update/${_id}`, {
+    const response = await fetch(`http://localhost:5000/post/update/${id}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -83,7 +83,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount,dateAdded
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/post/delete/${_id}`, {
+      const response = await fetch(`http://localhost:5000/post/delete/${id}`, {
         method: "GET",
         credentials: 'include',
         headers: {
@@ -93,7 +93,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount,dateAdded
       const dataa = await response.json();
       if (response.ok) {
         console.log(`Success: ${dataa.message}`);
-        onDelete(_id);
+        onDelete(id);
       } else {
         console.log(`Error: ${dataa.message}`);
       }
@@ -114,7 +114,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount,dateAdded
   }
   const handleLike = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/post/like/${_id}`, {
+      const response = await fetch(`http://localhost:5000/post/like/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +136,7 @@ export const Post3 = ({ _id, name, content, author,likes,commentsCount,dateAdded
     }
   }
   const handleDetails = () => {
-    window.location.href = '/post/'+_id;
+    window.location.href = '/post/'+id;
   }
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {

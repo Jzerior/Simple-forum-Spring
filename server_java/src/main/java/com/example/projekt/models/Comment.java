@@ -21,9 +21,9 @@ public class Comment {
     @ElementCollection
     private List<String> likes = new ArrayList<>();
 
-    @NotBlank
-    @Column(nullable = false)
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 
     @Column(name = "date_added", nullable = false)
     private LocalDateTime dateAdded = LocalDateTime.now();
@@ -53,11 +53,9 @@ public class Comment {
         this.likes = likes;
     }
 
-    public String getAuthor() {
-        return author;
-    }
+    public String getAuthor() {return author.getLogin();}
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
