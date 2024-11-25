@@ -15,7 +15,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/posts").permitAll() // Publiczny dostęp do `/api/posts`
                         .requestMatchers("/api/auth/**").permitAll() // Publiczne endpointy autoryzacji
-                        .anyRequest().authenticated() // Wszystkie inne endpointy wymagają uwierzytelnienia
+                        .anyRequest().permitAll() // Wszystkie inne endpointy wymagają uwierzytelnienia
                 );
         return http.build();
     }

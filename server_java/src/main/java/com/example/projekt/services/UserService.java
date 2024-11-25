@@ -3,7 +3,8 @@ package com.example.projekt.services;
 import com.example.projekt.models.User;
 import com.example.projekt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,58 +13,57 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    //private BCryptPasswordEncoder passwordEncoder;
 
-     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    // Rejestracja nowego użytkownika
-    public User registerUser(User user) {
-        if (userRepository.existsByLogin(user.getLogin())) {
-            throw new IllegalArgumentException("User with this login already exists.");
-        }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("User with this email already exists.");
-        }
-
-        // Hashowanie hasła
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        //user.setPassword(user.getPassword());
-        // Zapis użytkownika w bazie
-        return userRepository.save(user);
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    // Pobranie wszystkich użytkowników
+
+//    public Optional<User> registerUser(String login, String email, String password) {
+//        if (userRepository.findByEmail(email).isPresent()) {
+//            throw new IllegalArgumentException("User with this email already exists.");
+//        }
+//
+////        User newUser = User.builder()
+////                .login(login)
+////                .email(email)
+////                .password(password)
+////                //.password(passwordEncoder.encode(password))
+////                .role(false)
+////                .build();
+//
+//       // return Optional.of(userRepository.save(newUser));
+//    }/*
+
+    /*public boolean verifyPassword(User user, String rawPassword) {
+        return passwordEncoder.matches(rawPassword, user.getPassword());
+    }*/
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Pobranie użytkownika po ID
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+
+    public Optional<User> getUserByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    // Aktualizacja danych użytkownika
-    public User updateUser(Long id, User userDetails) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        existingUser.setLogin(userDetails.getLogin());
-        existingUser.setEmail(userDetails.getEmail());
-
-        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-        }
-
-        return userRepository.save(existingUser);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
-    // Usuwanie użytkownika
     public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("User not found");
-        }
         userRepository.deleteById(id);
     }
+
 }
