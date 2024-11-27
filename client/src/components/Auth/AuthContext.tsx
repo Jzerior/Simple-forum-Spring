@@ -1,12 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
+import { jwtDecode } from "jwt-decode";
 type AuthContextType = {
   isLoggedIn: boolean;
   username: string;
   logIn: () => void;
   logOut: () => void;
 };
-
+type jwtPayload = {
+  login: string;
+  role: string;
+  exp: number;
+}
 export const AuthContext = createContext<AuthContextType | null>(null);
 AuthContext.displayName = "AuthContext";
 
@@ -45,7 +49,9 @@ const useAuth = () => {
         const token = localStorage.getItem('jwtToken');
         if (token != null) {
           setIsLoggedIn(true);
-          const parsedToken=JSON.parse(token)
+          console.log(token)
+          const parsedToken=jwtDecode<jwtPayload>(JSON.parse(token))
+          console.log(parsedToken)
           setuserName(parsedToken.login)
         setExpiration(parsedToken.exp)
         }
@@ -77,3 +83,4 @@ export const AuthContextProvider = ({
     </AuthContext.Provider>
   );
 };
+

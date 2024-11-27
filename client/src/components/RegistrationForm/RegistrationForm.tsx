@@ -14,7 +14,7 @@ export const RegistrationForm = () => {
     const { logIn } = useAuthContext()
     const handleRegistrationForm: SubmitHandler<LoginFormData> = async (data) => {
         console.log(JSON.stringify(data));
-        const response = await fetch('http://localhost:5000/register', {
+        const response = await fetch('http://localhost:8080/user/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export const RegistrationForm = () => {
           const responseData = await response.json();
           if (response.ok) {
             setMessage(`Success: ${responseData.message}`);
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('http://localhost:8080/user/login', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

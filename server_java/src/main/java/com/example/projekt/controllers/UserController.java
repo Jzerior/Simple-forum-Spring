@@ -30,7 +30,7 @@ public class UserController {
     private String secretKey = Encoders.BASE64.encode(key.getEncoded());
 
     //@Value("${jwt.expiration}")
-    private long expirationTime;
+    private long expirationTime = 3600000;
 
     public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
@@ -95,8 +95,9 @@ public class UserController {
 
     private String generateJwtToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getLogin()) // Login użytkownika
-                //.claim("role", user.getRole()) // Rola użytkownika (opcjonalnie)
+                .setSubject("logowanie") // Login użytkownika
+                .claim("login",user.getLogin())
+                .claim("role", user.getPrivilege()) // Rola użytkownika (opcjonalnie)
                 .setIssuedAt(new Date()) // Czas wystawienia tokenu
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Czas wygaśnięcia tokenu
                 .signWith(SignatureAlgorithm.HS256, secretKey) // Podpisanie tokenu za pomocą secretKey

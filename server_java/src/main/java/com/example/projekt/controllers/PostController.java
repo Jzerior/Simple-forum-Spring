@@ -1,12 +1,16 @@
 package com.example.projekt.controllers;
 
+import com.example.projekt.models.NewPost;
 import com.example.projekt.models.Post;
 import com.example.projekt.services.PostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,15 +26,20 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
     @PostMapping
-    public ResponseEntity<?> addPost(@RequestBody Post post) {
+    public ResponseEntity<?> addPost(@RequestBody NewPost post) {
         Post savedPost = postService.addPost(post);
+        if(savedPost != null){
         return ResponseEntity.ok(savedPost);
+        }
+        return ResponseEntity.badRequest().body(
+                Map.of("status", "error", "message","Wprowadzone zostały błędne dane")
+        );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody Post postDetails, @RequestParam String login) {
+    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody NewPost postDetails) {
         try {
-            Optional<Post> updatedPost = postService.updatePost(id, postDetails, login);
+            Optional<Post> updatedPost = postService.updatePost(id, postDetails);
             return updatedPost.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.status(404).build());
         } catch (SecurityException e) {
@@ -57,7 +66,14 @@ public class PostController {
     @PostMapping("/{id}/like")
     public ResponseEntity<?> likePost(@PathVariable Long id, @RequestBody String login) {
         Optional<Post> likedPost = postService.likePost(id, login);
-        return likedPost.map(post -> ResponseEntity.ok("Likes count: " + post.getLikes().size()))
-                .orElse(ResponseEntity.status(404).body("Post not found"));
+        return likedPost.map(post -> ResponseEntity.ok(Map.of(
+                        "status", "success",
+                        "message", "likesCount: "+post.getLikes().size(),
+                        "data",post.getLikes().size()
+                )))
+                .orElse(ResponseEntity.status(404).body(Map.of(
+                        "status", "error",
+                        "message", "Post not found"
+                )));
     }
 }

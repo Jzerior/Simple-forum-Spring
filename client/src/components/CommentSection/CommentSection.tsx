@@ -3,10 +3,11 @@ import { AddComment } from "./AddComment";
 import { useAuthContext } from "../Auth/AuthContext";
 
 type comment = {
-  _id: string;
+  id: string;
   content: string;
   likes: [string];
   author: string;
+  dateAdded:Date;
 };
 
 interface Props {
@@ -32,7 +33,7 @@ export const CommentSection = ({ comments, commentsCount, postID,refresh }: Prop
                           </>
                           ) : (<></>)}
         {comments?.map((comment) => (
-          <Comment key={comment._id} comment={comment} onDelete={refresh} postID={postID}/>
+          <Comment key={comment.id} comment={comment} onDelete={refresh} postID={postID}/>
         ))}
       </div>
     </section>

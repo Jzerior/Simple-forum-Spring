@@ -4,13 +4,13 @@ import { Post3 } from "../Post/Post3";
 import { CommentSection } from "../CommentSection/CommentSection";
 
 type comment = {
-  _id: string;
+  id: string;
   content: string;
   likes:[string];
   author:string;
 }
 interface PostData {
-  _id: string;
+  id: string;
   name: string;
   content: string;
   author: string;
@@ -53,7 +53,7 @@ export const PostDetails = () => {
   return(
       <>
           <Post3 {...data} onDelete={removePost} />
-          <CommentSection comments={data.comments} commentsCount={data.commentsCount} postID={data._id} refresh={fetchPost}/>
+          <CommentSection comments={data.comments} commentsCount={data.commentsCount} postID={data.id} refresh={fetchPost}/>
       </>
     )
 };

@@ -44,8 +44,8 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
 
   const handleSumbit: FormEventHandler = async (event) => {
     event.preventDefault();
-    const response = await fetch(`http://localhost:8080/api/posts/update/${id}`, {
-      method: 'POST',
+    const response = await fetch(`http://localhost:8080/api/posts/${id}`, {
+      method: 'PUT',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
@@ -83,8 +83,8 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/posts/delete/${id}`, {
-        method: "GET",
+      const response = await fetch(`http://localhost:8080/api/posts/${id}`, {
+        method: "DELETE",
         credentials: 'include',
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
   }
   const handleLike = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/posts/like/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/posts/${id}/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -18,11 +18,22 @@ public class User {
     @Column(nullable = false, unique = true)
     private String login;
 
+    public String getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(String privilege) {
+        this.privilege = privilege;
+    }
+
     @NotBlank
     @Email
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank
+    @Column(nullable = false, unique = true)
+    private String privilege= "user";
     @NotBlank
     @Size(min = 8)
     @Column(nullable = false)

@@ -13,7 +13,7 @@ export const AddPost = () => {
     const [message, setMessage] = useState('');
     const { username } = useAuthContext();
     const handleAddForm: SubmitHandler<LoginFormData> = async (data) => {
-        const response = await fetch('http://localhost:5000/post/add', {
+        const response = await fetch('http://localhost:8080/api/posts', {
         method: 'POST',
         credentials: 'include',
         headers: {

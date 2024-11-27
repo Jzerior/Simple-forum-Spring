@@ -1,6 +1,8 @@
 package com.example.projekt.services;
 
+import com.example.projekt.models.NewPost;
 import com.example.projekt.models.Post;
+import com.example.projekt.models.User;
 import com.example.projekt.repositories.PostRepository;
 import com.example.projekt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +21,37 @@ public class PostService {
     private UserRepository userRepository;
 
     // Dodanie nowego postu
-    public Post addPost(Post post) {
-        post.setDateAdded(java.time.LocalDateTime.now());
-        return postRepository.save(post);
+    public Post addPost(NewPost newpost) {
+        Optional<User> author = userRepository.findByLogin(newpost.getAuthor());
+        if(author.isPresent()){
+            Post post = new Post();
+            post.setName(newpost.getName());
+            post.setContent(newpost.getContent());
+            post.setAuthor(author.orElse(null));
+            post.setDateAdded(java.time.LocalDateTime.now());
+            return postRepository.save(post);
+        }
+        return null;
     }
 
     // Aktualizacja istniejącego postu
-    public Optional<Post> updatePost(Long id, Post postDetails, String login) {
+    public Optional<Post> updatePost(Long id, NewPost postDetails) {
         Optional<Post> postOpt = postRepository.findById(id);
 
         if (postOpt.isPresent()) {
             Post post = postOpt.get();
 
             // Sprawdzamy, czy użytkownik jest autorem
-            if (!post.getAuthor().equals(login)) {
+            if (!post.getAuthor().equals(postDetails.getAuthor())) {
                 throw new SecurityException("Unauthorized access");
             }
-
+            Optional<User> author = userRepository.findByLogin(postDetails.getAuthor());
             post.setName(postDetails.getName());
             post.setContent(postDetails.getContent());
+            post.setAuthor(author.orElse(null));
+            post.setDateAdded(java.time.LocalDateTime.now());
             return Optional.of(postRepository.save(post));
+
         }
 
         return Optional.empty();

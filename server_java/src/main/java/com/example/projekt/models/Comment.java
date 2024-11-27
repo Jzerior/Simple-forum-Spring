@@ -22,6 +22,10 @@ public class Comment {
     private List<String> likes = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false) // Klucz obcy wskazujący na post
+    private Post post;
+
+    @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
@@ -53,7 +57,17 @@ public class Comment {
         this.likes = likes;
     }
 
-    public String getAuthor() {return author.getLogin();}
+    public Long getPost() {
+        return post.getId();
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public String getAuthor() {
+        return author.getLogin();
+    }
 
     public void setAuthor(User author) {
         this.author = author;

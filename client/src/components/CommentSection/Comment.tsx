@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { useAuthContext } from "../Auth/AuthContext";
 
 type comment = {
-    _id: string;
+    id: string;
     content: string;
     likes:[string];
     author:string;
@@ -15,23 +15,23 @@ type comment = {
     onDelete: (commentId: string) => void;
   }
 
-export const Comment = ({postID,comment,onDelete}:Props) => {
+export const Comment = ({comment,onDelete}:Props) => {
     const handleDelete = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/post/deleteComment/${postID}`, {
-            method: "POST",
+          const response = await fetch(`http://localhost:8080/post/comment/${comment.id}`, {
+            method: "DELETE",
             credentials: 'include',
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                commentId:comment._id
+                commentId:comment.id
               }),
           });
           const data = await response.json();
           if (response.ok) {
             console.log(`Success: ${data.message}`);
-            onDelete(comment._id);
+            onDelete(comment.id);
           } else {
             console.log(`Error: ${data.message}`);
           }

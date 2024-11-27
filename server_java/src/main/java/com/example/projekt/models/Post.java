@@ -38,6 +38,10 @@ public class Post {
     @Column(name = "date_added", nullable = false)
     private LocalDateTime dateAdded = LocalDateTime.now();
 
+//    public Post(NewPost np){
+//        this.name = np.getName();
+//        this.content = np.getContent();
+//    }
     // Gettery i settery
     public Long getId() {
         return id;

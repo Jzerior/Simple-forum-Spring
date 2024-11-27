@@ -18,7 +18,11 @@ export const AddComment = ({postID,refresh}:Props) => {
     const { username } = useAuthContext();
 
     const handleAddForm: SubmitHandler<LoginFormData> = async (data) => {
-        const response = await fetch(`http://localhost:5000/post/comment/${postID}`, {
+      console.log(JSON.stringify({
+        content: data.content,
+        author: username,
+      }))
+        const response = await fetch(`http://localhost:8080/post/comment/${postID}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
