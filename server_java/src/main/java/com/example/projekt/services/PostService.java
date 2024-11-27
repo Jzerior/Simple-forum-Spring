@@ -83,12 +83,14 @@ public class PostService {
     // Pobranie postów z paginacją (prosta implementacja)
     public List<Post> getPostsByPage(int page, int limit) {
         int offset = (page - 1) * limit;
-        return postRepository.findAll()
+        List<Post> posts = postRepository.findAll()
                 .stream()
                 .skip(offset)
                 .limit(limit)
                 .peek(post -> post.setCommentsCount(post.getComments().size()))
                 .toList();
+        posts.forEach(post -> post.setCommentsCount(post.getComments().size()));
+        return posts;
     }
 
     // Dodanie lub usunięcie polubienia postu

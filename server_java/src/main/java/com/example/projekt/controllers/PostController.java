@@ -25,6 +25,12 @@ public class PostController {
         List<Post> posts=postService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
+    @GetMapping({"/page/{page}"})
+    public ResponseEntity<?> allPostsByPage(@PathVariable int page){
+        List<Post> posts=postService.getPostsByPage(page,5);
+        System.out.println(posts.toArray().length);
+        return ResponseEntity.ok(posts);
+    }
     @PostMapping
     public ResponseEntity<?> addPost(@RequestBody NewPost post) {
         Post savedPost = postService.addPost(post);
