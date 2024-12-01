@@ -21,26 +21,6 @@ public class UserService {
     }
 
 
-//    public Optional<User> registerUser(String login, String email, String password) {
-//        if (userRepository.findByEmail(email).isPresent()) {
-//            throw new IllegalArgumentException("User with this email already exists.");
-//        }
-//
-////        User newUser = User.builder()
-////                .login(login)
-////                .email(email)
-////                .password(password)
-////                //.password(passwordEncoder.encode(password))
-////                .role(false)
-////                .build();
-//
-//       // return Optional.of(userRepository.save(newUser));
-//    }/*
-
-    /*public boolean verifyPassword(User user, String rawPassword) {
-        return passwordEncoder.matches(rawPassword, user.getPassword());
-    }*/
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

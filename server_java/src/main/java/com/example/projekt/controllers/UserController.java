@@ -1,11 +1,13 @@
 package com.example.projekt.controllers;
 
+import com.example.projekt.auth.JwtConfig;
 import com.example.projekt.models.User;
 import com.example.projekt.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,11 +26,8 @@ public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Generuje klucz odpowiedniej długości
-    String secret = Encoders.BASE64.encode(key.getEncoded());
-    //@Value("${jwt.secret}")
-    private String secretKey = Encoders.BASE64.encode(key.getEncoded());
-
+    @Autowired
+    private JwtConfig jwtConfig;
     //@Value("${jwt.expiration}")
     private long expirationTime = 3600000;
 
@@ -95,12 +94,12 @@ public class UserController {
 
     private String generateJwtToken(User user) {
         return Jwts.builder()
-                .setSubject("logowanie") // Login użytkownika
+                .setSubject(user.getLogin()) // Login użytkownika
                 .claim("login",user.getLogin())
                 .claim("role", user.getPrivilege()) // Rola użytkownika (opcjonalnie)
                 .setIssuedAt(new Date()) // Czas wystawienia tokenu
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Czas wygaśnięcia tokenu
-                .signWith(SignatureAlgorithm.HS256, secretKey) // Podpisanie tokenu za pomocą secretKey
+                .signWith(SignatureAlgorithm.HS256,jwtConfig.getSecretKey()) // Podpisanie tokenu za pomocą secretKey
                 .compact();
     }
 
