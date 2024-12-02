@@ -1,10 +1,13 @@
 package com.example.projekt.controllers;
 import com.example.projekt.models.Comment;
 import com.example.projekt.models.NewComment;
+import com.example.projekt.models.Post;
 import com.example.projekt.services.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,10 +51,36 @@ public class CommentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable Long id) {
-        boolean deleted = commentService.deleteComment(id);
-        return deleted
-                ? ResponseEntity.ok("Comment deleted successfully")
-                : ResponseEntity.status(404).body("Comment not found");
+        // Odczytaj zalogowanego użytkownika
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = authentication.getName();  // Login użytkownika
+
+        // Pobierz post z bazy danych
+        Comment comment = commentService.getCommentById(id).orElse(null);  // Przyjmujemy, że masz metodę do pobierania posta
+
+        if (comment == null) {
+            return ResponseEntity.status(404).body(
+                    Map.of("status", "error", "message","Post not found")
+            );
+        }
+        // Sprawdzenie, czy użytkownik jest autorem posta lub administratorem
+        if (comment.getAuthor().equals(loggedUsername) || authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_admin"))) {
+
+            boolean deleted = commentService.deleteComment(id);  // Usuń post
+
+            return deleted
+                    ? ResponseEntity.status(200).body(
+                    Map.of("status", "error", "message","Comment deleted successfully")
+            )
+                    : ResponseEntity.status(404).body(
+                    Map.of("status", "error", "message","Failed to delete the comment")
+            );
+        } else {
+            return ResponseEntity.status(403).body(
+                    Map.of("status", "error", "message","You are not authorized to delete this comment")
+            );
+        }
     }
 
     @GetMapping("{postid}/{commentid}")

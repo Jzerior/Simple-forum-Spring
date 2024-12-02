@@ -199,7 +199,7 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
             {(username==author || role=="admin") ? (
               <>
                 <div className={` ${(username==author || role=="admin") ? 'block' : 'hidden'} flex justify-between items-center`}>
-                  <div className={`flex items-center space-x-3 sm:space-x-4`}>
+                  <div className={` ${(username==author ) ? 'block' : 'hidden'} flex items-center space-x-3 sm:space-x-4`}>
                     {edit ? (
                       <>
                         <button type="button" className="w-full text-white bg-primary-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={handleCancel}>Cancel</button>

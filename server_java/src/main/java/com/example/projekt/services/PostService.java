@@ -84,7 +84,7 @@ public class PostService {
     // Pobranie postów z paginacją (prosta implementacja)
     public List<Post> getPostsByPage(int page, int limit) {
         int offset = (page - 1) * limit;
-        List<Post> posts = postRepository.findAll()
+        List<Post> posts = postRepository.findAllByOrderByDateAddedDesc()
                 .stream()
                 .skip(offset)
                 .limit(limit)
