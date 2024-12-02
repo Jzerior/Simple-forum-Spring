@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Nowy sposób na wyłączenie CSRF
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("http://localhost:5173"));  // Dozwolone źródła
+                    configuration.setAllowedOrigins(List.of("http://localhost:5173","http://localhost","http://localhost:80","http://127.0.0.1","http://127.0.0.1:80"));  // Dozwolone źródła
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Dozwolone metody
                     configuration.setAllowedHeaders(List.of("*"));  // Dozwolone nagłówki
                     configuration.setAllowCredentials(true);  // Obsługa ciasteczek/autoryzacji
