@@ -28,7 +28,7 @@ export const LoginForm = () => {
         const token = responseData.token;
         console.log(responseData.token)
         console.log(token)
-        localStorage.setItem('jwtToken', JSON.stringify(token));
+        localStorage.setItem('jwtToken', token);
         logIn()
         window.location.href = '/';
         setMessage(`Success: ${responseData.message}`);

@@ -23,6 +23,7 @@ export const Comment = ({comment,onDelete}:Props) => {
             credentials: 'include',
             headers: {
               "Content-Type": "application/json",
+              'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
             },
             body: JSON.stringify({
                 commentId:comment.id

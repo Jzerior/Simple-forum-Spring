@@ -6,6 +6,8 @@ import com.example.projekt.services.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,10 +57,36 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
-        boolean deleted = postService.deletePost(id);
-        return deleted
-                ? ResponseEntity.ok("Post deleted successfully")
-                : ResponseEntity.status(404).body("Post not found");
+        // Odczytaj zalogowanego użytkownika
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = authentication.getName();  // Login użytkownika
+
+        // Pobierz post z bazy danych
+        Post post = postService.getPostById(id).orElse(null);  // Przyjmujemy, że masz metodę do pobierania posta
+
+        if (post == null) {
+            return ResponseEntity.status(404).body(
+                    Map.of("status", "error", "message","Post not found")
+            );
+        }
+        // Sprawdzenie, czy użytkownik jest autorem posta lub administratorem
+        if (post.getAuthor().equals(loggedUsername) || authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_admin"))) {
+
+            boolean deleted = postService.deletePost(id);  // Usuń post
+
+            return deleted
+                ? ResponseEntity.status(200).body(
+                Map.of("status", "error", "message","Post deleted successfully")
+            )
+                : ResponseEntity.status(404).body(
+                Map.of("status", "error", "message","Failed to delete the post")
+            );
+        } else {
+            return ResponseEntity.status(403).body(
+                    Map.of("status", "error", "message","You are not authorized to delete this post")
+            );
+        }
     }
 
     @GetMapping("/{id}")

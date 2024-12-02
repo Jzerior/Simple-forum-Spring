@@ -31,6 +31,9 @@ type EditData = {
 
 export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded, onDelete }: Props) => {
   const { username } = useAuthContext();
+  const { role } = useAuthContext();
+  console.log(role)
+  console.log(typeof(role))
   const location = useLocation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [edit, setEdit] = useState(false);
@@ -49,6 +52,7 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
       },
       body: JSON.stringify({
           name : namee,
@@ -88,9 +92,11 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
         credentials: 'include',
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
         },
       });
       const dataa = await response.json();
+      console.log(dataa)
       if (response.ok) {
         console.log(`Success: ${dataa.message}`);
         onDelete(id);
@@ -99,6 +105,7 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
       }
     } catch (error) {
       console.error("Error:", error);
+      console.log(error)
     }
   };
 
@@ -118,6 +125,7 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
         },
         body: JSON.stringify({
           login: username,
@@ -188,9 +196,9 @@ export const Post3 = ({ id, name, content, author,likes,commentsCount,dateAdded,
                  Comments: {commentsCount} 
                 </button>}
             </div>
-            {username==author ? (
+            {(username==author || role=="admin") ? (
               <>
-                <div className={` ${username == author ? 'block' : 'hidden'} flex justify-between items-center`}>
+                <div className={` ${(username==author || role=="admin") ? 'block' : 'hidden'} flex justify-between items-center`}>
                   <div className={`flex items-center space-x-3 sm:space-x-4`}>
                     {edit ? (
                       <>

@@ -15,9 +15,9 @@ export const AddPost = () => {
     const handleAddForm: SubmitHandler<LoginFormData> = async (data) => {
         const response = await fetch('http://localhost:8080/api/posts', {
         method: 'POST',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
         },
         body: JSON.stringify({
             name : data.name,
@@ -25,6 +25,7 @@ export const AddPost = () => {
             author: username,
         }),
       });
+      console.log("`Authorization': `Bearer "+localStorage.getItem('jwtToken')+"`")
       const responseData = await response.json();
       if (response.ok) {
         setMessage(`Success: ${responseData.message}`);

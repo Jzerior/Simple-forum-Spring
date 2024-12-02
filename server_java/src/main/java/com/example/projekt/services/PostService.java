@@ -21,6 +21,7 @@ public class PostService {
     private UserRepository userRepository;
 
     // Dodanie nowego postu
+    
     public Post addPost(NewPost newpost) {
         Optional<User> author = userRepository.findByLogin(newpost.getAuthor());
         if(author.isPresent()){

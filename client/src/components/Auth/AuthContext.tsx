@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 type AuthContextType = {
   isLoggedIn: boolean;
   username: string;
+  role:string;
   logIn: () => void;
   logOut: () => void;
 };
@@ -28,13 +29,15 @@ export const useAuthContext = () => {
 const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setuserName ] = useState ("");
+    const [role,setRole]= useState("");
     const [expiration, setExpiration] = useState(0);
     const logIn = () => {
       const token= localStorage.getItem('jwtToken');
       if(token != null){
         setIsLoggedIn(true);
-        const parsedToken=JSON.parse(token)
+        const parsedToken=jwtDecode<jwtPayload>(token)
         setuserName(parsedToken.login)
+        setRole(parsedToken.role)
         setExpiration(parsedToken.exp)
       }
     }
@@ -50,10 +53,11 @@ const useAuth = () => {
         if (token != null) {
           setIsLoggedIn(true);
           console.log(token)
-          const parsedToken=jwtDecode<jwtPayload>(JSON.parse(token))
+          const parsedToken=jwtDecode<jwtPayload>(token)
           console.log(parsedToken)
           setuserName(parsedToken.login)
-        setExpiration(parsedToken.exp)
+          setRole(parsedToken.role)
+          setExpiration(parsedToken.exp)
         }
     }, []);
     useEffect(() => {
@@ -68,7 +72,7 @@ const useAuth = () => {
 
       return () => clearInterval(interval);
     }, [expiration]);
-    return { isLoggedIn, username,logIn, logOut };
+    return { isLoggedIn, username,role,logIn, logOut };
 };
 
 export const AuthContextProvider = ({
@@ -76,9 +80,9 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { isLoggedIn, username, logIn, logOut } = useAuth();
+  const { isLoggedIn, username,role, logIn, logOut } = useAuth();
   return (
-    <AuthContext.Provider value={{ isLoggedIn,username, logIn, logOut }}>
+    <AuthContext.Provider value={{ isLoggedIn,username,role, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );
