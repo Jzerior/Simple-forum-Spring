@@ -1,5 +1,6 @@
 package com.example.projekt;
 
+import com.example.projekt.auth.JwtConfig;
 import com.example.projekt.controllers.CommentController;
 import com.example.projekt.models.Comment;
 import com.example.projekt.models.NewComment;
@@ -11,10 +12,13 @@ import com.example.projekt.security.SecurityConfig;
 import com.example.projekt.services.CommentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,9 +28,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CommentController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-@Import(SecurityConfig.class)
 class CommentControllerTest {
 
     @Autowired
