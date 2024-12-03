@@ -24,7 +24,7 @@ export const RegistrationForm = () => {
           const responseData = await response.json();
           if (response.ok) {
             setMessage(`Success: ${responseData.message}`);
-            const response = await fetch('http://localhost:8080/user/login', {
+            const responsel = await fetch('http://localhost:8080/user/login', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -32,17 +32,17 @@ export const RegistrationForm = () => {
                 },
                 body: JSON.stringify(data),
               });
-              const rdata = await response.json();
-              if (response.ok) {
-                const token = rdata.accessToken;
-                console.log(rdata.accessToken)
+              const responseDatal = await responsel.json();
+              if (responsel.ok) {
+                const token = responseDatal.token;
+                console.log(responseDatal.token)
                 console.log(token)
-                localStorage.setItem('jwtToken', JSON.stringify(token));
+                localStorage.setItem('jwtToken', token);
                 logIn()
                 window.location.href = '/';
-                setMessage(`Success: ${rdata.message}`);
+                setMessage(`Success: ${responseDatal.message}`);
               } else {
-                setMessage(`Error: ${rdata.message}`);
+                setMessage(`Error: ${responseDatal.message}`);
               }
           } else {
             setMessage(`Error: ${responseData.message}`);

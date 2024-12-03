@@ -32,7 +32,7 @@ public class User {
     private String email;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String privilege= "user";
     @NotBlank
     @Size(min = 8)

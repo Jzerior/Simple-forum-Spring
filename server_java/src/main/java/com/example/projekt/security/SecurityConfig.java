@@ -55,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/login").permitAll() // Publiczne endpointy autoryzacji
                         .requestMatchers("/user/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
-                        .anyRequest().authenticated()// Wszystkie inne endpointy wymagają uwierzytelnienia
+                        .anyRequest().permitAll()// Wszystkie inne endpointy wymagają uwierzytelnienia
                 )
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
         return http.build();
