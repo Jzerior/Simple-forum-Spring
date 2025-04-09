@@ -23,8 +23,8 @@ Projekt to proste forum umożliwiające dodawanie postów i komentowanie ich prz
   - Umożliwienie moderacji forum, poprzez usuwanie postów przez administratorów
 
 ## Serwer
-- **Język programowania**: JavaScript
-- **Framework**: Express.js
+- **Język programowania**: Java
+- **Framework**: Spring
 - **Baza danych**: SQL
 - **Features**:
   - Autoryzacja i auntetykacja za pomocą JWT
