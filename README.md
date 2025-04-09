@@ -1,6 +1,6 @@
 # Simple forum 
 
-rojekt to proste forum umożliwiające dodawanie postów i komentowanie ich przez użytkowników identyfikowanych za pomocą tokenów JWT. Backend został napisany w Javie (Spring) i działa w architekturze REST zgodnie z wzorcem MVC. Frontend oparty jest na TypeScript (React), a dane przechowywane są w relacyjnej bazie danych SQL. Całość działa w środowisku Docker, gdzie każdy komponent uruchamiany jest w osobnym kontenerze.
+Projekt to proste forum umożliwiające dodawanie postów i komentowanie ich przez użytkowników identyfikowanych za pomocą tokenów JWT. Backend został napisany w Javie (Spring) i działa w architekturze REST zgodnie z wzorcem MVC. Frontend oparty jest na TypeScript (React), a dane przechowywane są w relacyjnej bazie danych SQL. Całość działa w środowisku Docker, gdzie każdy komponent uruchamiany jest w osobnym kontenerze.
 
 
 # **Funkcjonalności:**
